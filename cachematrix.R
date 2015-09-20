@@ -1,15 +1,16 @@
 ## Coursera R Programming Assignment 2
+## 2015-09-20 dsherman
 
-## Create a cacheable matrix object. 
-## Use a factory pattern to create an object that can
-## hold a matrix and its inversion. When inverting
-## the matrix, hold the inversion in a cache, and use
-## it when possible.
+## Create a wrapper for a matrix capable of holding a
+## inverting a matrix. When inverting the matrix, hold
+## the inversion in a cache, and use the cached inversion
+## for repeated calls.
 
-## Cacheable Matrix factory. 
-## set() the matrix
-## get() the matrix
-##
+## Cacheable Invertible Matrix: 
+## set(theMatrix)
+## get() returns theMatrix
+## setInverse(invMatrix)
+## getInverse() returns invMatrix
 makeCacheMatrix <- function(x = matrix()) {
     m <- NULL
     set <- function(y) {
@@ -17,9 +18,9 @@ makeCacheMatrix <- function(x = matrix()) {
         m <<-NULL
     }
     get <- function() x
-    setinv <- function(inverse) m <<- inverse
+    setInverse <- function(inverse) m <<- inverse
     getinv <- function() m
-    list(set = set, get = get, setinv = setinv, getinv = getinv)
+    list(set = set, get = get, setInverse = setInverse, getinv = getinv)
 }
 
 
@@ -34,7 +35,7 @@ cacheSolve <- function(x, ...) {
     if (is.null(inv)) {
         mtx <- x$get()
         inv <- solve(mtx)
-        x$setinv(inv)
+        x$setInverse(inv)
     }
     inv
 }
