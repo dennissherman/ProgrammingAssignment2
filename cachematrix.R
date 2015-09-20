@@ -1,16 +1,15 @@
 ## Coursera R Programming Assignment 2
 ## 2015-09-20 dsherman
 
-## Create a wrapper for a matrix capable of holding a
-## inverting a matrix. When inverting the matrix, hold
-## the inversion in a cache, and use the cached inversion
-## for repeated calls.
 
-## Cacheable Invertible Matrix: 
-## set(theMatrix)
-## get() returns theMatrix
-## setInverse(invMatrix)
-## getInverse() returns invMatrix
+## Invert a matrix, and hold the inversion in a cache.
+
+## Create a "cacheable matrix", a wrapper for a matrix 
+## capable of holding the matrix and it's inversion. 
+## * set(theMatrix)
+## * get() returns theMatrix
+## * setInverse(invMatrix)
+## * getInverse() returns invMatrix
 makeCacheMatrix <- function(x = matrix()) {
     m <- NULL
     set <- function(y) {
@@ -19,33 +18,37 @@ makeCacheMatrix <- function(x = matrix()) {
     }
     get <- function() x
     setInverse <- function(inverse) m <<- inverse
-    getinv <- function() m
-    list(set = set, get = get, setInverse = setInverse, getinv = getinv)
+    getInverse <- function() m
+    list(
+          set = set
+        , get = get
+        , setInverse = setInverse
+        , getInverse = getInverse
+        )
 }
 
-
-## Solve (invert) the matrix. If that has been done already, 
+## Use the cacheable matrix to Solve (invert) the matrix. If that has been done already, 
 ## return the result from the cache.
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-    inv <- x$getinv()
+    invMatrix <- x$getInverse()
     
     # return from cache if available
-    if (is.null(inv)) {
-        mtx <- x$get()
-        inv <- solve(mtx)
-        x$setInverse(inv)
+    if (is.null(invMatrix)) {
+        theMatrix <- x$get()
+        invMatrix <- solve(theMatrix)
+        x$setInverse(invMatrix)
     }
-    inv
+    invMatrix
 }
 
 # test function, compare first and second run times
 
-# mtx is an invertible matrix
-timer <- function(mtx) {
+# theMatrix is an invertible matrix
+timer <- function(theMatrix) {
     
-    t <- makeCacheMatrix(mtx)
+    t <- makeCacheMatrix(theMatrix)
     
     start.time <- Sys.time()
     cacheSolve(t)
