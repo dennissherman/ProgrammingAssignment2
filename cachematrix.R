@@ -81,3 +81,6 @@ timer <- function(cm) {
     cacheSolve(cm)
     print( Sys.time() - start.time )
 }
+
+# test method inspired by http://masterr.org/r/how-to-cache-a-matrix-inversion-in-r/
+
